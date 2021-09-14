@@ -12,11 +12,10 @@ Setup:
 
 
 Project structure
- - app.py runs the whole application. It is responsible for the setup of the whole application and the launching of the
-webapp
- - meme.py receives the quotes and the images and forwards it to the meme_creator, which then creates the image with a
-caption
- - in the meme_generator package we find the meme_creator file. As mentioned above, this file creates a meme from an
-image and a quote
+ - app.py runs the whole application in a web-browser. With a click of a button a random meme can be created. There
+is also a possibility to create a custom meme by specifying an image url, and a quote along with an author.
+ - meme.py runs the whole application in the command line. Specifying aruments "--body", "--author" and "--path" create
+a new meme. If nothing is specified, a random image and quote will be chosen from the _data package and saved.
+ - in the meme_generator package we find the meme_creator file. This file creates a meme from an image and a quote.
  - in the quote_engine package are all the different ingestors which read different file types and return a quote to
 caller.
