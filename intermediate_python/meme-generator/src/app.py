@@ -4,9 +4,10 @@ import random
 import os
 import requests
 from flask import Flask, render_template, request
-
+import io
 from quote_engine import Ingestor
 from meme_engine import MemeEngine
+from pathlib import Path
 
 app = Flask(__name__)
 
@@ -15,17 +16,19 @@ meme = MemeEngine('./static')
 
 def setup():
     """ Load all resources """
-
-    quote_files = ['./_data/DogQuotes/DogQuotesTXT.txt',
-                   './_data/DogQuotes/DogQuotesDOCX.docx',
-                   './_data/DogQuotes/DogQuotesPDF.pdf',
-                   './_data/DogQuotes/DogQuotesCSV.csv']
+    cwd = Path.cwd()
+    data_path = cwd.joinpath("_data")
+    dog_quotes = data_path.joinpath("DogQuotes")
+    quote_files = [dog_quotes.joinpath("DogQuotesTXT.txt"),
+                   dog_quotes.joinpath("DogQuotesDOCX.docx"),
+                   dog_quotes.joinpath("DogQuotesPDF.pdf"),
+                   dog_quotes.joinpath("DogQuotesCSV.csv")]
 
     _quotes = []
     for file in quote_files:
-        _quotes.extend(Ingestor.parse(file))
+        _quotes.extend(Ingestor.parse(str(file)))
 
-    images_path = "./_data/photos/dog/"
+    images_path = data_path.joinpath("photos").joinpath("dog")
 
     images = []
     for file in os.listdir(images_path):
@@ -64,11 +67,12 @@ def meme_post():
     img_data = requests.get(img_url).content
     body = request.form['body']
     author = request.form['author']
-    tmp = './tmp_img.jpg'
-    with open(tmp, 'wb').write(img_data):
-        pass
 
-    path = meme.make_meme(tmp, body, author)
+    image_file=io.BytesIO(img_data)
+
+    path = meme.make_meme(source_img=image_file,
+                          text=body,
+                          author=author)
 
     return render_template('meme.html', path=path)
 

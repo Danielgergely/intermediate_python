@@ -46,7 +46,6 @@ class NEODatabase:
         self._neo_dict = {}
         for neo in self._neos:
             self._neo_dict[neo.designation] = neo
-
         for approach in approaches:
             neo = self._neo_dict[approach._designation]
             approach.neo = neo

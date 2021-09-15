@@ -21,5 +21,5 @@ class Ingestor(IngestorInterface):
                 if importer.can_ingest(path):
                     return importer.parse(path)
             return None
-        except Exception:
-            raise Exception(f"An error occured while processing {path}") from None
+        except Exception as e:
+            raise Exception(f"An error occured while processing {path},exception was {str(e)}")

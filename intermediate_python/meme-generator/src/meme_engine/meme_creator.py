@@ -9,10 +9,10 @@ class MemeEngine:
     def __init__(self, output_dir: str):
         self.output_dir = output_dir
 
-    def make_meme(self, img_path: str, text: str, author: str, width=500) -> str:
+    def make_meme(self, source_img, text: str, author: str, width=500) -> str:
         """Creates an image with a quote on it."""
         try:
-            with Image.open(img_path) as image:
+            with Image.open(source_img) as image:
                 image = resize_image(image, width)
                 image = add_caption(image, text, author)
                 path = f'{self.output_dir}/img.png'

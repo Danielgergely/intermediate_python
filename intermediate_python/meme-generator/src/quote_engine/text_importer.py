@@ -28,5 +28,5 @@ class TextIngestor(IngestorInterface):
                     quotes.append(quote)
 
             return quotes
-        except Exception:
-            raise Exception(f"Something went wrong while parsing {path}") from None
+        except Exception as e:
+            raise Exception(f"Something went wrong while parsing {path}, exception was {str(e)}")
