@@ -9,9 +9,12 @@ from quote_engine import Ingestor
 from meme_engine import MemeEngine
 from pathlib import Path
 
+# static_dir = str(Path.cwd().joinpath("src").joinpath("static"))
+#
 app = Flask(__name__)
 
-meme = MemeEngine('./static')
+meme = MemeEngine(output_dir="./static",
+                  font=Path.cwd().joinpath("fonts").joinpath("LilitaOne-Regular.ttf"))
 
 
 def setup():
@@ -68,7 +71,7 @@ def meme_post():
     body = request.form['body']
     author = request.form['author']
 
-    image_file=io.BytesIO(img_data)
+    image_file = io.BytesIO(img_data)
 
     path = meme.make_meme(source_img=image_file,
                           text=body,
